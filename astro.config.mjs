@@ -2,6 +2,5 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://NicMotta.github.io',
-  base: '/interior-design/',
+  site: 'https://magalimcgrath.com',
 });
