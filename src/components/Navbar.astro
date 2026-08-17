@@ -1,0 +1,105 @@
+---
+import { CONTENT } from "../utils/content";
+export interface Props {
+  active?: "inicio" | "diseno-interiores" | "arte" | "contacto";
+}
+
+const { active } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 bg-secondary">
+  <nav
+    class="flex justify-between items-center w-full px-6 md:px-16 py-3 max-w-7xl mx-auto"
+  >
+    <a
+      href="/#home"
+      class="font-logo text-2xl font-bold text-dark tracking-tighter no-underline"
+      >{CONTENT.navbar.title}</a
+    >
+    <ul class="hidden md:flex gap-4 items-center list-none m-0 p-0">
+      {
+        CONTENT.navbar.links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class={`font-body text-base font-bold no-underline transition-all duration-300 focus-visible:outline-2 focus-visible:outline-primary px-4 py-1 rounded-full ${
+                active === link.id
+                  ? "bg-primary text-secondary font-semibold"
+                  : "text-dark hover:text-primary hover:bg-light/10"
+              }`}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <button
+      id="menu-toggle"
+      class="md:hidden text-primary p-0 border-none bg-transparent cursor-pointer"
+      aria-label="Menú de navegación"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span id="menu-icon-open" class="material-symbols-outlined text-2xl"
+        >menu</span
+      >
+      <span
+        id="menu-icon-close"
+        class="material-symbols-outlined text-2xl hidden">close</span
+      >
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-light">
+    <ul class="flex flex-col gap-1 p-4 list-none m-0">
+      {
+        CONTENT.navbar.links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class={`font-body text-base font-bold no-underline transition-all duration-300 px-4 py-3 rounded-xl block ${
+                active === link.id
+                  ? "bg-primary text-secondary font-semibold"
+                  : "text-dark hover:text-primary hover:bg-light/10"
+              }`}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const openIcon = document.getElementById("menu-icon-open");
+  const closeIcon = document.getElementById("menu-icon-close");
+
+  if (toggle && menu && openIcon && closeIcon) {
+    function closeMenu() {
+      menu?.classList.add("hidden");
+      toggle?.setAttribute("aria-expanded", "false");
+      openIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("hidden");
+    }
+
+    toggle.addEventListener("click", () => {
+      const isOpen = menu.classList.toggle("hidden") === false;
+      toggle.setAttribute("aria-expanded", String(isOpen));
+      openIcon.classList.toggle("hidden", isOpen);
+      closeIcon.classList.toggle("hidden", !isOpen);
+    });
+
+    menu
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", closeMenu));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+  }
+</script>

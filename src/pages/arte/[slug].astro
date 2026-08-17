@@ -1,0 +1,111 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import Lightbox from "../../components/Lightbox.astro";
+import { Image } from "astro:assets";
+import { CONTENT } from "../../utils/content";
+import type { ImageMetadata } from "astro";
+
+const imageModules = import.meta.glob<ImageMetadata>(
+  "../../assets/images/art/*/*.webp",
+  { eager: true, import: "default" },
+);
+
+const artImages: Record<string, { num: number; image: ImageMetadata }[]> = {};
+
+for (const [path, image] of Object.entries(imageModules)) {
+  const match = path.match(/\/art\/([^/]+)\/(\d+)\.webp$/);
+  if (!match) continue;
+  const [, folder, numStr] = match;
+  (artImages[folder] ??= []).push({ num: Number(numStr), image });
+}
+
+const getArtImages = (folder: string): ImageMetadata[] =>
+  (artImages[folder] ?? [])
+    .sort((a, b) => a.num - b.num)
+    .map(({ image }) => image);
+
+export function getStaticPaths() {
+  return CONTENT.art.projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const images = getArtImages(project.folder);
+const lightboxImages = images.map((img) => img.src);
+---
+
+<BaseLayout title={`Magalí Mc Grath | ${project.title}`}>
+  <Navbar active="arte" />
+
+  <main class="pt-8 pb-4">
+    <section class="max-w-7xl mx-auto px-6 md:px-16 mb-8">
+      <a
+        href="/#art"
+        class="inline-flex items-center gap-1 font-body text-xs text-primary uppercase tracking-widest no-underline mb-8 hover:gap-2 transition-all"
+      >
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        Volver a Arte
+      </a>
+
+      <div class="flex items-baseline gap-4 mb-4">
+        <span
+          class="font-body text-lg font-bold text-light uppercase tracking-widest"
+        >
+          {project.number}
+        </span>
+        <h1
+          class="font-headline text-headline-xl-mobile md:text-headline-xl text-dark m-0"
+        >
+          {project.title}
+        </h1>
+      </div>
+    </section>
+  </main>
+
+  <section class="max-w-7xl mx-auto px-6 md:px-16 mb-16">
+    <div class="mb-12">
+      <h2 class="font-headline text-headline-md text-dark m-0 mb-4">
+        Sobre la obra
+      </h2>
+      <p
+        class="font-body text-base text-dark leading-relaxed my-2 font-semibold"
+      >
+        {project.date}
+      </p>
+      <p class="font-body text-base text-dark leading-relaxed">
+        {project.details}
+      </p>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto px-6 md:px-16">
+    <div
+      class="flex flex-col md:flex-row md:flex-wrap gap-4"
+      data-lightbox-group
+      data-lightbox-id="project-lightbox"
+    >
+      {
+        images.map((img, index) => (
+          <div
+            class={`overflow-hidden rounded-2xl cursor-pointer h-64 ${index === 0 ? "md:w-[calc(66.667%-0.5rem)]" : "md:w-[calc(33.333%-0.667rem)]"}`}
+            data-lightbox-src={lightboxImages[index]}
+          >
+            <Image
+              class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              src={img}
+              alt={`${project.title} - imagen ${index + 1}`}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<Lightbox id="project-lightbox" />
+
+<Footer />

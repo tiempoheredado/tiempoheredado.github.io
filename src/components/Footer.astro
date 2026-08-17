@@ -1,0 +1,20 @@
+---
+import { CONTENT } from "../utils/content";
+---
+
+<footer class="mx-4 mb-4 font-semibold">
+  <div class="bg-secondary flex justify-between px-6 md:px-12 py-3 mx-auto">
+    <div class="flex gap-1 m-auto">
+      {
+        CONTENT.footer.links.map((social) => (
+          <a
+            href={social.href}
+            class="font-body text-base text-dark hover:text-primary hover:bg-light/10 px-3 py-1.5 rounded-full transition-all no-underline"
+          >
+            {social.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>

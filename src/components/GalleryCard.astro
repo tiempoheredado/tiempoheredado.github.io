@@ -1,0 +1,46 @@
+---
+export interface Props {
+  title: string;
+  year: string;
+  aspectRatio: string;
+  colSpan: number;
+  layout?: string;
+  imageSrc?: string;
+}
+
+const {
+  title,
+  year,
+  aspectRatio,
+  colSpan,
+  layout = "stack",
+  imageSrc = "https://placehold.co/1920x1080",
+} = Astro.props;
+
+const aspectClass = `aspect-${aspectRatio}`;
+const footerClass =
+  layout === "row"
+    ? "p-4 border-t border-light flex justify-between items-baseline"
+    : "p-4 border-t border-light";
+---
+
+<article
+  class="gallery-card group overflow-hidden bg-secondary border border-light rounded-2xl"
+  style={`--col-span: ${colSpan}`}
+>
+  <div class={`${aspectClass} overflow-hidden relative rounded-t-2xl`}>
+    <img
+      class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
+      src={imageSrc}
+      alt={`Obra: ${title}`}
+    />
+  </div>
+  <div class={footerClass}>
+    <h2 class="font-headline text-headline-md text-dark m-0">
+      {title}
+    </h2>
+    <span class="font-body text-xs text-light uppercase tracking-widest">
+      {year}
+    </span>
+  </div>
+</article>

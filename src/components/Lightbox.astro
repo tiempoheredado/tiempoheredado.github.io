@@ -1,0 +1,320 @@
+---
+export interface Props {
+  id?: string;
+}
+
+const { id = "lightbox" } = Astro.props;
+---
+
+<dialog
+  id={id}
+  data-lightbox-dialog={id}
+  class="backdrop:bg-dark/90 bg-transparent p-0 m-auto max-w-[95vw] max-h-[95vh] rounded-2xl overflow-hidden shadow-2xl"
+>
+  <div class="relative w-full h-full flex items-center justify-center bg-dark/95 rounded-2xl">
+    <button
+      data-lightbox-close={id}
+      class="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-secondary/10 hover:bg-secondary/20 transition-colors cursor-pointer border-none"
+      aria-label="Cerrar"
+    >
+      <span class="material-symbols-outlined text-secondary text-xl">close</span>
+    </button>
+
+    <div
+      data-lightbox-counter={id}
+      class="absolute top-4 left-4 z-20 font-body text-sm text-secondary/70 uppercase tracking-widest"
+    >
+      1 / 1
+    </div>
+
+    <button
+      data-lightbox-prev={id}
+      class="absolute left-4 z-20 w-12 h-12 flex items-center justify-center rounded-full bg-secondary/10 hover:bg-secondary/20 transition-colors cursor-pointer border-none"
+      aria-label="Imagen anterior"
+    >
+      <span class="material-symbols-outlined text-secondary text-2xl">chevron_left</span>
+    </button>
+
+    <div
+      data-lightbox-image-container
+      class="w-full h-full flex items-center justify-center p-16 transition-transform duration-300"
+    >
+      <img
+        data-lightbox-image={id}
+        src=""
+        alt=""
+        class="max-w-full max-h-[85vh] object-contain rounded-lg select-none"
+        draggable="false"
+      />
+    </div>
+
+    <button
+      data-lightbox-next={id}
+      class="absolute right-4 z-20 w-12 h-12 flex items-center justify-center rounded-full bg-secondary/10 hover:bg-secondary/20 transition-colors cursor-pointer border-none"
+      aria-label="Siguiente imagen"
+    >
+      <span class="material-symbols-outlined text-secondary text-2xl">chevron_right</span>
+    </button>
+
+    <div
+      data-lightbox-thumbnails={id}
+      class="absolute bottom-0 left-0 right-0 z-20 flex items-center justify-center gap-2 p-4 bg-gradient-to-t from-dark/80 to-transparent overflow-x-auto"
+    >
+    </div>
+  </div>
+</dialog>
+
+<script is:inline define:vars={{ id }}>
+  (function () {
+    var state = {
+      images: [],
+      currentIndex: 0,
+      touchStartX: 0,
+      touchStartY: 0,
+      isDragging: false,
+    };
+
+    function getDialog() {
+      return document.querySelector('[data-lightbox-dialog="' + id + '"]');
+    }
+
+    function getImage() {
+      return document.querySelector('[data-lightbox-image="' + id + '"]');
+    }
+
+    function getCounter() {
+      return document.querySelector('[data-lightbox-counter="' + id + '"]');
+    }
+
+    function getThumbnails() {
+      return document.querySelector('[data-lightbox-thumbnails="' + id + '"]');
+    }
+
+    function renderThumbnails() {
+      var container = getThumbnails();
+      if (!container) return;
+      container.innerHTML = "";
+      state.images.forEach(function (src, i) {
+        var thumb = document.createElement("button");
+        thumb.className =
+          "w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all cursor-pointer p-0 " +
+          (i === state.currentIndex
+            ? "border-secondary scale-110"
+            : "border-secondary/30 opacity-60 hover:opacity-100");
+        thumb.innerHTML =
+          '<img src="' + src + '" class="w-full h-full object-cover" alt="" />';
+        thumb.addEventListener("click", function () {
+          goTo(i);
+        });
+        container.appendChild(thumb);
+      });
+    }
+
+    function goTo(index) {
+      if (index < 0) index = state.images.length - 1;
+      if (index >= state.images.length) index = 0;
+
+      state.currentIndex = index;
+      var img = getImage();
+      var counter = getCounter();
+      if (img) {
+        img.src = state.images[index];
+        img.alt = "Imagen " + (index + 1);
+      }
+      if (counter) {
+        counter.textContent = (index + 1) + " / " + state.images.length;
+      }
+      renderThumbnails();
+    }
+
+    function open(startIndex, images) {
+      state.images = images;
+      state.currentIndex = startIndex;
+
+      var dialog = getDialog();
+      if (!dialog) return;
+      dialog.showModal();
+      document.body.style.overflow = "hidden";
+      goTo(startIndex);
+    }
+
+    function close() {
+      var dialog = getDialog();
+      if (!dialog) return;
+      dialog.close();
+      document.body.style.overflow = "";
+    }
+
+    function next() {
+      goTo(state.currentIndex + 1);
+    }
+
+    function prev() {
+      goTo(state.currentIndex - 1);
+    }
+
+    // --- Event listeners ---
+
+    // Close button
+    var closeBtn = document.querySelector('[data-lightbox-close="' + id + '"]');
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        close();
+      });
+    }
+
+    // Prev button
+    var prevBtn = document.querySelector('[data-lightbox-prev="' + id + '"]');
+    if (prevBtn) {
+      prevBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        prev();
+      });
+    }
+
+    // Next button
+    var nextBtn = document.querySelector('[data-lightbox-next="' + id + '"]');
+    if (nextBtn) {
+      nextBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        next();
+      });
+    }
+
+    // Backdrop click
+    var dialog = getDialog();
+    if (dialog) {
+      dialog.addEventListener("click", function (e) {
+        if (e.target === dialog) {
+          close();
+        }
+      });
+    }
+
+    // Click on gallery images to open
+    document.addEventListener("click", function (e) {
+      var target = e.target;
+      var clickable = target.closest("[data-lightbox-src]");
+      if (!clickable) return;
+
+      var group = clickable.closest("[data-lightbox-group]");
+      if (!group) return;
+
+      var lbId = group.getAttribute("data-lightbox-id") || "lightbox";
+      if (lbId !== id) return;
+
+      var imgs = group.querySelectorAll("[data-lightbox-src]");
+      var images = Array.from(imgs).map(function (el) {
+        return el.getAttribute("data-lightbox-src") || "";
+      });
+      var index = Array.from(imgs).indexOf(clickable);
+
+      open(index, images);
+    });
+
+    // Keyboard
+    document.addEventListener("keydown", function (e) {
+      var openDialog = document.querySelector("dialog[open]");
+      if (!openDialog) return;
+
+      var dialogId = openDialog.getAttribute("data-lightbox-dialog") || openDialog.id;
+      if (dialogId !== id) return;
+
+      if (e.key === "Escape") {
+        close();
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        next();
+      }
+    });
+
+    // Touch/swipe
+    document.addEventListener("touchstart", function (e) {
+      var openDialog = document.querySelector("dialog[open]");
+      if (!openDialog) return;
+      if ((openDialog.getAttribute("data-lightbox-dialog") || openDialog.id) !== id) return;
+
+      var container = e.target.closest("[data-lightbox-image-container]");
+      if (!container) return;
+
+      state.touchStartX = e.touches[0].clientX;
+      state.touchStartY = e.touches[0].clientY;
+      state.isDragging = true;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", function (e) {
+      var openDialog = document.querySelector("dialog[open]");
+      if (!openDialog) return;
+      if (!state.isDragging) return;
+
+      var diffX = e.touches[0].clientX - state.touchStartX;
+      var imgContainer = openDialog.querySelector("[data-lightbox-image-container]");
+      if (imgContainer) {
+        imgContainer.style.transform = "translateX(" + (diffX * 0.3) + "px)";
+      }
+    }, { passive: true });
+
+    document.addEventListener("touchend", function (e) {
+      var openDialog = document.querySelector("dialog[open]");
+      if (!openDialog) return;
+      if (!state.isDragging) return;
+
+      state.isDragging = false;
+
+      var endX = e.changedTouches[0].clientX;
+      var diffX = endX - state.touchStartX;
+      var diffY = e.changedTouches[0].clientY - state.touchStartY;
+
+      var imgContainer = openDialog.querySelector("[data-lightbox-image-container]");
+      if (imgContainer) {
+        imgContainer.style.transform = "";
+      }
+
+      if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) {
+          prev();
+        } else {
+          next();
+        }
+      }
+    }, { passive: true });
+  })();
+</script>
+
+<style>
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  dialog[open] {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  dialog::backdrop {
+    animation: backdrop-fade-in 0.2s ease-out;
+  }
+
+  @keyframes backdrop-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

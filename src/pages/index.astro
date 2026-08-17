@@ -1,0 +1,148 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { CONTENT } from "../utils/content";
+
+import gvn1 from "../assets/images/gvn/1.webp";
+import conexa1 from "../assets/images/conexa/1.webp";
+import coresa1 from "../assets/images/coresa/2.webp";
+import mg1 from "../assets/images/mg/1.webp";
+import susana1 from "../assets/images/susana/1.webp";
+import quintana1 from "../assets/images/quintana/1.webp";
+import croquis1 from "../assets/images/croquis/1.webp";
+
+import daniel from "../assets/images/art/daniel/1.webp";
+import juan from "../assets/images/art/juan/1.webp";
+import miguelyaida from "../assets/images/art/miguelyaida/1.webp";
+import rodolfo from "../assets/images/art/rodolfo/1.webp";
+
+import bio from "../assets/images/bio/bio2.webp";
+
+const projectImages: Record<string, typeof gvn1> = {
+  gvn: gvn1,
+  conexa: conexa1,
+  coresa: coresa1,
+  mg: mg1,
+  susana: susana1,
+  quintana: quintana1,
+  croquis: croquis1,
+};
+
+const artImages: Record<string, typeof daniel> = {
+  juan: juan,
+  daniel: daniel,
+  miguelyaida: miguelyaida,
+  rodolfo: rodolfo,
+};
+---
+
+<BaseLayout title="Magalí Mc Grath | Interiorismo y Arte">
+  <Navbar active="inicio" />
+
+  <Hero />
+
+  <main class="w-full max-w-7xl mx-auto pt-16 px-6 md:px-16">
+    <!-- About Me -->
+    <section class="flex flex-col md:flex-row gap-8 py-16 items-center">
+      <div class="md:w-5/12 mb-8 md:mb-0">
+        <Image
+          class="w-full aspect-4/5 object-cover grayscale hover:grayscale-0 transition-all duration-700 rounded-3xl"
+          src={bio}
+          alt=""
+        />
+      </div>
+      <div class="md:w-6/12 md:ml-auto space-y-4">
+        <span
+          class="font-body text-sm font-bold text-light uppercase tracking-widest mb-4 block"
+        >
+          Sobre mí
+        </span>
+        <h2 class="font-headline md:text-5xl text-4xl text-dark mb-4 m-0">
+          {CONTENT.aboutMe.title}
+        </h2>
+        <p class="font-headline text-xl text-dark my-2">
+          {CONTENT.aboutMe.subtitle}
+        </p>
+        {
+          CONTENT.aboutMe.description.map((paragraph) => (
+            <p class="font-body text-base text-dark my-2">{paragraph}</p>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Interior Design Featured -->
+    <section class="space-y-8 py-16" id="interior-design">
+      <div
+        class="flex flex-col md:flex-row justify-between items-baseline gap-2 border-b border-light pb-2"
+      >
+        <h2 class="font-headline text-headline-md text-dark m-0">
+          {CONTENT.design.title}
+        </h2>
+        <span
+          class="font-body text-sm font-bold text-light uppercase tracking-widest"
+          >{CONTENT.design.subtitle}</span
+        >
+      </div>
+      <div class="flex flex-col md:flex-row md:flex-wrap gap-4">
+        {
+          CONTENT.design.projects.map((project, index) => (
+            <ProjectCard
+              slug={project.slug}
+              number={project.number}
+              title={project.title}
+              image={projectImages[project.folder]}
+              variant={index === 0 ? "large" : "small"}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Art -->
+    <section class="space-y-8 py-16" id="art">
+      <div
+        class="flex flex-col md:flex-row justify-between items-baseline gap-2 border-b border-light pb-2"
+      >
+        <h2 class="font-headline text-headline-md text-dark m-0">
+          {CONTENT.art.title}
+        </h2>
+        <span
+          class="font-body text-sm font-bold text-light uppercase tracking-widest"
+          >{CONTENT.art.subtitle}</span
+        >
+      </div>
+      <div class="flex flex-col md:flex-row md:flex-wrap gap-4">
+        {
+          CONTENT.art.projects.map((project, index) => (
+            <ProjectCard
+              slug={project.slug}
+              number={project.number}
+              title={project.title}
+              image={artImages[project.folder]}
+              base="/arte"
+              variant={index === 0 ? "large" : "small"}
+            />
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      class="m-auto text-center font-body flex flex-col gap-4"
+      id="contact"
+    >
+      <h3 class="font-headline text-4xl md:text-5xl">
+        ¿Tenés un proyecto en mente?
+      </h3>
+      <p class="text-xl">¡Trabajemos juntos!</p>
+      <p class="font-headline text-2xl mt-4">Contactame</p>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

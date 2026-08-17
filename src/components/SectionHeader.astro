@@ -1,0 +1,65 @@
+---
+export interface Props {
+  tagline?: string;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  as?: "h1" | "h2" | "h3";
+  size?: "xl" | "lg";
+  subtitleSize?: "xl" | "lg" | "base";
+  descriptionSize?: "lg" | "base";
+  align?: "left" | "center";
+}
+
+const {
+  tagline,
+  title,
+  subtitle,
+  description,
+  as = "h2",
+  size = "lg",
+  subtitleSize = "base",
+  descriptionSize = "base",
+  align = "left",
+} = Astro.props;
+
+const alignClass = align === "center" ? "text-center" : "";
+const titleClass =
+  size === "xl"
+    ? "font-headline text-headline-xl-mobile md:text-headline-xl"
+    : "font-headline text-5xl";
+const subtitleClass =
+  subtitleSize === "xl"
+    ? "font-headline text-3xl"
+    : subtitleSize === "lg"
+      ? "font-headline text-2xl"
+      : "font-headline text-xl";
+const descriptionClass =
+  descriptionSize === "lg"
+    ? "font-body text-lg text-dark"
+    : "font-body text-base text-dark";
+const HeadingTag = as;
+---
+
+{
+  tagline && (
+    <span class="font-body text-sm font-bold text-light uppercase tracking-widest mb-4 block">
+      {tagline}
+    </span>
+  )
+}
+<HeadingTag class={`${titleClass} text-dark mb-4 m-0`}>
+  {title}
+</HeadingTag>
+{
+  subtitle && (
+    <p class={`${subtitleClass} text-dark my-2 ${alignClass}`}>
+      {subtitle}
+    </p>
+  )
+}
+{
+  description && (
+    <p class={`${descriptionClass} m-0 ${alignClass}`} set:html={description} />
+  )
+}
