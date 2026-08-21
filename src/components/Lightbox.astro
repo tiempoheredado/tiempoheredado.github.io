@@ -192,8 +192,10 @@ const { id = "lightbox" } = Astro.props;
       });
     }
 
-    // Click on gallery images to open
+    // Click on gallery images to open (disabled on mobile/responsive)
     document.addEventListener("click", function (e) {
+      if (!window.matchMedia("(min-width: 768px)").matches) return;
+
       var target = e.target;
       var clickable = target.closest("[data-lightbox-src]");
       if (!clickable) return;
