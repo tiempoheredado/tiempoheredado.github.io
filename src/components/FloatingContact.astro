@@ -1,0 +1,33 @@
+<a
+  href="/#contact"
+  aria-label="Contactarme"
+  data-floating-contact
+  class="group fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-primary text-secondary pl-5 pr-5 py-4 shadow-xl transition-all duration-300 hover:bg-dark md:hover:pl-7 md:hover:pr-7"
+>
+  <span
+    aria-hidden="true"
+    class="fab-pulse-ring absolute inset-0 rounded-full bg-primary"
+  ></span>
+  <span class="relative flex items-center gap-2">
+    <span class="material-symbols-outlined text-2xl">mail</span>
+    <span
+      class="font-body text-sm font-bold uppercase tracking-widest hidden md:inline whitespace-nowrap"
+    >
+      Contactame
+    </span>
+  </span>
+</a>
+
+<script>
+  const fab = document.querySelector("[data-floating-contact]");
+  const contact = document.getElementById("contact");
+  if (fab && contact && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        fab.classList.toggle("fab-hidden", entry.isIntersecting);
+      },
+      { rootMargin: "0px" },
+    );
+    observer.observe(contact);
+  }
+</script>

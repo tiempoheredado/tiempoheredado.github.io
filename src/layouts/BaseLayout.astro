@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import FloatingContact from "../components/FloatingContact.astro";
 
 export interface Props {
   title?: string;
@@ -63,5 +64,6 @@ const {
     class="bg-secondary text-dark selection:bg-primary selection:text-secondary"
   >
     <slot />
+    <FloatingContact />
   </body>
 </html>
