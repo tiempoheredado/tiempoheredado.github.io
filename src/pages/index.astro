@@ -143,8 +143,7 @@ const artImages: Record<string, typeof daniel> = {
       <h3 class="font-headline text-4xl md:text-5xl">
         {CONTENT.contact.title}
       </h3>
-      <p class="text-xl">{CONTENT.contact.subtitle}</p>
-      <p class="font-headline text-2xl mt-4">{CONTENT.contact.label}</p>
+      <p class="font-headline text-2xl mt-4">{CONTENT.contact.subtitle}</p>
 
       <form
         data-contact-form
@@ -194,6 +193,16 @@ const artImages: Record<string, typeof daniel> = {
         </p>
       </form>
     </section>
+
+    <div class="flex justify-center py-16">
+      <a
+        href="#home"
+        class="inline-flex items-center gap-2 rounded-full border border-light px-6 py-3 font-body text-xs md:text-sm font-bold text-dark uppercase tracking-widest no-underline hover:border-dark hover:bg-dark hover:text-secondary transition-colors duration-300"
+      >
+        <span class="material-symbols-outlined text-base">arrow_upward</span>
+        Volver al inicio
+      </a>
+    </div>
   </main>
 
   <Footer />
