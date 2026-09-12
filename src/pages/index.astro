@@ -70,7 +70,10 @@ const artImages: Record<string, typeof daniel> = {
         </p>
         {
           CONTENT.aboutMe.description.map((paragraph) => (
-            <p class="font-body text-base text-dark my-2 text-justify" set:html={paragraph} />
+            <p
+              class="font-body text-base text-dark my-2 text-justify"
+              set:html={paragraph}
+            />
           ))
         }
       </div>
@@ -134,7 +137,7 @@ const artImages: Record<string, typeof daniel> = {
     </section>
 
     <section
-      class="m-auto text-center font-body flex flex-col gap-4 max-w-2xl"
+      class="m-auto text-center font-body flex flex-col gap-4 max-w-3xl"
       id="contact"
     >
       <h3 class="font-headline text-4xl md:text-5xl">
@@ -187,7 +190,8 @@ const artImages: Record<string, typeof daniel> = {
           data-contact-status
           class="hidden font-body text-sm text-dark"
           role="status"
-        ></p>
+        >
+        </p>
       </form>
     </section>
   </main>
@@ -211,8 +215,7 @@ const artImages: Record<string, typeof daniel> = {
         headers: { Accept: "application/json" },
       });
       if (res.ok) {
-        status.textContent =
-          "¡Mensaje enviado! Te voy a responder pronto.";
+        status.textContent = "¡Mensaje enviado! Te voy a responder pronto.";
         form.reset();
       } else {
         const data = await res.json();
@@ -221,8 +224,7 @@ const artImages: Record<string, typeof daniel> = {
           "Hubo un error al enviar. Intentalo de nuevo.";
       }
     } catch {
-      status.textContent =
-        "Hubo un error de conexión. Intentalo de nuevo.";
+      status.textContent = "Hubo un error de conexión. Intentalo de nuevo.";
     } finally {
       if (button) button.disabled = false;
     }
