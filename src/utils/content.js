@@ -160,6 +160,12 @@ export const CONTENT = {
       },
     ],
   },
+  contact: {
+    title: "¿Tenés un proyecto en mente?",
+    subtitle: "¡Trabajemos juntos!",
+    label: "Contactame",
+    formspreeAction: "https://formspree.io/f/mrpgvnzw",
+  },
   footer: {
     links: [
       {
