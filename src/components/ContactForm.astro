@@ -1,0 +1,81 @@
+---
+import Button from "./Button.astro";
+import { CONTENT } from "../utils/content";
+---
+
+<form
+  data-contact-form
+  action={CONTENT.contact.formspreeAction}
+  method="POST"
+  class="w-full text-left flex flex-col gap-4 mt-6"
+>
+  <input
+    type="text"
+    name="_gotcha"
+    tabindex="-1"
+    autocomplete="off"
+    aria-hidden="true"
+    class="hidden"
+  />
+  <div class="flex flex-col md:flex-row gap-4">
+    <input
+      type="text"
+      name="nombre"
+      required
+      minlength="2"
+      maxlength="60"
+      placeholder="Tu nombre"
+      class="w-full rounded-full border border-light bg-white px-5 py-3 font-body text-base text-dark placeholder:text-light focus:outline-primary transition"
+    />
+    <input
+      type="email"
+      name="_replyto"
+      required
+      maxlength="120"
+      placeholder="Tu email"
+      class="w-full rounded-full border border-light bg-white px-5 py-3 font-body text-base text-dark placeholder:text-light focus:outline-primary transition"
+    />
+  </div>
+  <textarea
+    name="mensaje"
+    rows="5"
+    required
+    minlength="10"
+    maxlength="2000"
+    placeholder="Contame sobre tu proyecto..."
+    class="w-full rounded-2xl border border-light bg-white px-5 py-3 font-body text-base text-dark placeholder:text-light focus:outline-primary transition"
+  ></textarea>
+  <div class="text-center">
+    <Button type="submit">Enviar mensaje</Button>
+  </div>
+  <p
+    data-contact-status
+    class="contact-status status-enter hidden font-body text-sm"
+    role="status"
+    aria-live="polite"
+  ></p>
+</form>
+
+<div
+  data-form-success
+  class="hidden flex flex-col items-center justify-center gap-4 py-8 m-auto text-center max-w-md"
+  role="status"
+  aria-live="polite"
+>
+  <span
+    class="flex items-center justify-center w-16 h-16 rounded-full bg-primary/15 text-primary"
+  >
+    <span class="material-symbols-outlined text-4xl">check_circle</span>
+  </span>
+  <p class="font-headline text-2xl text-dark m-0">
+    ¡Mensaje enviado con éxito!
+  </p>
+  <p class="font-body text-base text-dark m-0 leading-relaxed">
+    Gracias por escribirme. Te voy a responder a la brevedad.
+  </p>
+</div>
+
+<script>
+  import { initContactForm } from "../scripts/contact-form";
+  initContactForm();
+</script>
