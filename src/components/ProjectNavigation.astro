@@ -1,0 +1,65 @@
+---
+export interface Props {
+  prevTitle: string;
+  prevHref: string;
+  nextTitle: string;
+  nextHref: string;
+}
+
+const { prevTitle, prevHref, nextTitle, nextHref } = Astro.props;
+---
+
+<section class="max-w-7xl mx-auto px-6 md:px-16 pt-16 pb-8">
+  <div
+    class="border-t border-light pt-8 flex flex-col gap-5 md:gap-8 md:flex-row md:items-center md:justify-between"
+  >
+    <a href={prevHref} class="flex items-center gap-3 md:gap-4 no-underline min-w-0">
+      <span
+        class="flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-dark text-secondary transition-colors duration-300 group-hover:bg-primary shrink-0"
+      >
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+      </span>
+      <span class="flex flex-col min-w-0">
+        <span
+          class="font-body text-[10px] md:text-xs font-bold text-light uppercase tracking-widest mb-1"
+          >Proyecto anterior</span
+        >
+        <span
+          class="font-headline text-lg md:text-2xl leading-tight text-dark group-hover:text-primary transition-colors duration-300"
+        >
+          {prevTitle}
+        </span>
+      </span>
+    </a>
+
+    <a
+      href="#"
+      class="order-3 md:order-2 self-center inline-flex items-center gap-2 rounded-full border border-light px-6 py-3 font-body text-xs md:text-sm font-bold text-dark uppercase tracking-widest no-underline hover:border-dark hover:bg-dark hover:text-secondary transition-colors duration-300"
+    >
+      <span class="material-symbols-outlined text-base">arrow_upward</span>
+      Volver arriba
+    </a>
+
+    <a
+      href={nextHref}
+      class="order-2 md:order-3 flex items-center gap-3 md:gap-4 md:flex-row-reverse md:text-right no-underline min-w-0"
+    >
+      <span
+        class="flex items-center justify-center w-11 h-11 md:w-12 md:h-12 rounded-full bg-dark text-secondary transition-colors duration-300 group-hover:bg-primary shrink-0"
+      >
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      </span>
+      <span class="flex flex-col min-w-0">
+        <span
+          class="font-body text-[10px] md:text-xs font-bold text-light uppercase tracking-widest mb-1"
+          >Siguiente proyecto</span
+        >
+        <span
+          class="font-headline text-lg md:text-2xl leading-tight text-dark group-hover:text-primary transition-colors duration-300"
+        >
+          {nextTitle}
+        </span>
+      </span>
+    </a>
+  </div>
+</section>

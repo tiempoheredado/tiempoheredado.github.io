@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Navbar from "../../components/Navbar.astro";
 import Footer from "../../components/Footer.astro";
 import Lightbox from "../../components/Lightbox.astro";
+import ProjectNavigation from "../../components/ProjectNavigation.astro";
 import { Image } from "astro:assets";
 import { CONTENT } from "../../utils/content";
 import type { ImageMetadata } from "astro";
@@ -36,6 +37,11 @@ export function getStaticPaths() {
 const { project } = Astro.props;
 const images = getArtImages(project.folder);
 const lightboxImages = images.map((img) => img.src);
+
+const projects = CONTENT.art.projects;
+const index = projects.findIndex((p) => p.slug === project.slug);
+const prev = projects[(index - 1 + projects.length) % projects.length];
+const next = projects[(index + 1) % projects.length];
 ---
 
 <BaseLayout title={`Magalí Mc Grath | ${project.title}`}>
@@ -104,6 +110,13 @@ const lightboxImages = images.map((img) => img.src);
       }
     </div>
   </section>
+
+  <ProjectNavigation
+    prevTitle={prev.title}
+    prevHref={`/arte/${prev.slug}`}
+    nextTitle={next.title}
+    nextHref={`/arte/${next.slug}`}
+  />
 </BaseLayout>
 
 <Lightbox id="project-lightbox" />
