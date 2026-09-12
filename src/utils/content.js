@@ -24,10 +24,10 @@ export const CONTENT = {
     title: "Magalí Mc Grath",
     subtitle: "Lic. en Artes Visuales | Diseñadora de Interiores",
     description: [
-      "Mi formación en Artes Visuales y Diseño de Interiores, junto con la especialización en fotografía, edición de imagen y herramientas de diseño, enriquecieron mi manera de observar, analizar y proyectar los espacios.",
-      "La experiencia en empresas vinculadas al mobiliario y al diseño, desempeñándome en áreas de diseño, compras y comercial, me permitió desarrollar una visión integral de los proyectos. Aprendí a combinar creatividad con criterio técnico, adaptabilidad y una comprensión más amplia de las necesidades de cada cliente y de los procesos que intervienen en el diseño.",
-      "Me interesa especialmente trabajar sobre espacios con identidad e historia. Encuentro un gran valor en preservar aquellos elementos que otorgan carácter a una propiedad y resignificarlos para responder a las necesidades actuales. Busco que pasado y presente convivan de manera natural, dando lugar a espacios funcionales, contemporáneos y con una identidad propia.",
-      "Entiendo el diseño como un proceso colaborativo. Creo que el intercambio de ideas y la diversidad de miradas fortalecen cada proyecto, permitiendo alcanzar soluciones más sólidas, sensibles y enriquecedoras.",
+      "Mi formación en <strong>Artes Visuales y Diseño de Interiores</strong>, junto con la especialización en fotografía, edición de imagen y herramientas de diseño, enriquecieron mi manera de observar, analizar y proyectar los espacios.",
+      "La experiencia en empresas vinculadas al mobiliario y al diseño, desempeñándome en áreas de <strong>diseño, compras y comercial</strong>, me permitió desarrollar una visión integral de los proyectos. Aprendí a combinar creatividad con criterio técnico, adaptabilidad y una comprensión más amplia de las necesidades de cada cliente y de los procesos que intervienen en el diseño.",
+      "Me interesa especialmente trabajar sobre <strong>espacios con identidad e historia</strong>. Encuentro un gran valor en preservar aquellos elementos que otorgan carácter a una propiedad y resignificarlos para responder a las necesidades actuales. Busco que pasado y presente convivan de manera natural, dando lugar a espacios funcionales, contemporáneos y con una identidad propia.",
+      "Entiendo el <strong>diseño como un proceso colaborativo</strong>. Creo que el intercambio de ideas y la diversidad de miradas fortalecen cada proyecto, permitiendo alcanzar soluciones más sólidas, sensibles y enriquecedoras.",
     ],
   },
   design: {
