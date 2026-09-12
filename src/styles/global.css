@@ -6,9 +6,9 @@
   --color-dark: #161314;
   --color-light: #8a8d8e;
 
-  --font-logo: "Playfair Display", serif;
-  --font-headline: "Playfair Display", serif;
-  --font-body: "Playfair Display", serif;
+  --font-logo: "Inter", sans-serif;
+  --font-headline: "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
 
   --text-headline-xl: 64px;
   --text-headline-xl--line-height: 1.1;
